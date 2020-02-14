@@ -6,10 +6,7 @@ cloneObject = (object) ->
   clone
 
 module.exports = ({blobStore}) ->
-  startCrashReporter = require('./crash-reporter-start')
   {remote} = require 'electron'
-
-  startCrashReporter() # Before anything else
 
   exitWithStatusCode = (status) ->
     remote.app.emit('will-quit')
@@ -64,8 +61,8 @@ module.exports = ({blobStore}) ->
 
       # Copy: cmd-c / ctrl-c
       if (event.metaKey or event.ctrlKey) and event.keyCode is 67
-        ipcHelpers.call('window-method', 'copy')
-
+        atom.clipboard.write(window.getSelection().toString())
+        
     window.addEventListener('keydown', handleKeydown, true)
 
     # Add 'exports' to module search path.
